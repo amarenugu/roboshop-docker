@@ -47,6 +47,13 @@ services:
     - redis
     - catalogue
 
+  mysql:
+    image: joindevops/mysql:v1
+    build: ./mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: "RoboShop@1"
+
 networks:
   default:
     name: roboshop
