@@ -20,6 +20,8 @@ services:
     - catalogue
     - user
     - cart
+    - shipping
+    - payment
   user:
     build: ./user
     image: joindevops/user:v1
@@ -57,6 +59,7 @@ services:
     depends_on:
     - mysql
     - cart
+  
   mysql:
     image: joindevops/mysql:v1
     build: ./mysql
@@ -64,6 +67,30 @@ services:
     command: --mysql-native-password=ON
     environment:
       MYSQL_ROOT_PASSWORD: "RoboShop@1"
+
+  rabbitmq:
+    image : rabbitmq:3
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: roboshop
+      RABBITMQ_DEFAULT_PASS: roboshop123
+
+  payment:
+    build: ./payment
+    image: joindevops/payment:v1
+    container_name: payment
+    environment:
+      CART_HOST: "cart"
+      CART_POST: 8080
+      USER_HOST: "user"
+      USER_PORT: 8080
+      AMQP_HOST: "rabbitmq"
+      AMQP_USER: "roboshop"
+      AMQP_PASS: "roboshop123"
+    depends_on:
+    - user
+    - cart  
+    - rabbitmq
 
 networks:
   default:
