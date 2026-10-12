@@ -4,6 +4,8 @@ services:
     build: ./mongodb
     image: joindevops/mongodb:v1 #docker build -it joindevops/mongodb:v1
     container_name: mongodb #docker run -d --network roboshop joindevops/mongodb:v1
+    volumes:
+      - mongodb:/data/db # mongodb stores data in /data/db
   catalogue:
     build: ./catalogue
     image: joindevops/catalogue:v1
@@ -36,6 +38,8 @@ services:
   redis:
     image: redis:7
     container_name: redis
+    volumes:
+    - redis:/data
 
   cart:
     build: ./cart
@@ -65,12 +69,16 @@ services:
     build: ./mysql
     container_name: mysql
     command: --mysql-native-password=ON
+    volumes:
+    - mysql:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: "RoboShop@1"
 
   rabbitmq:
     image : rabbitmq:3
     container_name: rabbitmq
+    volumes:
+    - rabbitmq:/var/lib/rabbitmq
     environment:
       RABBITMQ_DEFAULT_USER: roboshop
       RABBITMQ_DEFAULT_PASS: roboshop123
@@ -97,3 +105,9 @@ networks:
     name: roboshop
     driver: bridge
     external: false #if true it should be created manually, if false docker creates this network
+
+volumes:
+  mongodb:
+  redis:
+  mysql:
+  rabbitmq:
