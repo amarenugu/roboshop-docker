@@ -1,6 +1,6 @@
 FROM python:3.9
 WORKDIR /app
-COPY requirement.txt .
+COPY requirements.txt .
 COPY payment.ini .
 COPY payment.py .
 COPY rabbitmq.py .
