@@ -1,5 +1,5 @@
 FROM python:3.9
-WORKDR /app
+WORKDIR /app
 COPY requirement.txt .
 COPY payment.ini .
 COPY payment.py .
